@@ -1,5 +1,8 @@
 package game;
 
-interface Event {
-	public void inputEvent();
+interface Event{
+	public void create();
+	public boolean acceptRawResponse();
+	
+	
 }

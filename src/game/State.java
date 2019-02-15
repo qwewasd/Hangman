@@ -9,7 +9,9 @@ public class State {
 	private StateType type;
 	private String name;
 	private List<State> visibleStates = new ArrayList<>();
+	private List<Keyword> keywords = new ArrayList<>();
 	
+	private String description;
 	/**
 	 * Constructor of a new State with a unique StateType t, unique name,
 	 * and an array of visible states which the state can be transitioned to.
@@ -23,10 +25,10 @@ public class State {
 	 * @param t Unique StateType 
 	 * @param visibility Visibility of other states that the current state object can transition back and forth to.
 	 */
-	public State(StateType t) {
+	public State(StateType t, String name) {
 		if(isUnique(t)) {
-			setState(t);
-			setName();
+			setStateType(t);
+			setName(name);
 			States.add(this);
 		}else {
 			System.out.println("StateType is not unique");
@@ -41,14 +43,12 @@ public class State {
 		return type;
 	}
 	
-	private void setState(StateType t) {
+	private void setStateType(StateType t) {
 		type = t;
 	}
 	
-	private void setName() {
-		if(type != null) {
-			name = type.toString();
-		}
+	private void setName(String name) {
+		this.name = name;
 	}
 	
 	private boolean isUnique(StateType t) {
@@ -75,6 +75,13 @@ public class State {
 		return visibleStates.get(i);
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	public void render(final Rendering r) {
 		if(CurrentState == this) {
 			r.render();	
@@ -87,7 +94,7 @@ public class State {
 		if(CurrentState == this) {
 			System.out.println("You are currently in " + toString() + ". Options: ");
 			for(State x : visibleStates) {
-				System.out.println("\"" + x.toString() + "\"");
+				System.out.println(x.toString() + ": " + x.getDescription());
 			}
 		}
 	}
@@ -114,12 +121,13 @@ public class State {
 		
 	}
 	
-	public void inputEvent(final Event e) {
+	public void event(final Event e) {
 		if(CurrentState == this) {
-			e.inputEvent();	
+			
+			e.create();	
 		}
-	}
-		
+	}	
+
 	/**
 	 * Returns the name of the State
 	 * @return name
@@ -165,7 +173,20 @@ public class State {
 	
 	public static void SetCurrentState(State t) {
 		if(States.contains(t)) {
+			List<State> tempList = new ArrayList<>();
+			tempList.add(t);
+			tempList.add(CurrentState);
+			for(State x : States) {
+				if(x != CurrentState && x != t) {
+					tempList.add(x);
+				}
+				
+			}
+			States = tempList;
 			CurrentState = t;
+		
+			
+			
 		}
 	}
 	
