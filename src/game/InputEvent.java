@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public abstract class InputEvent implements Event{
-	private Scanner scanner = new Scanner(System.in);
+	private Scanner scanner = new Scanner(System.in, "UTF-8");
 	private String input; 
 	
 	private boolean inputAdded = false;
@@ -12,7 +12,7 @@ public abstract class InputEvent implements Event{
 	
 	public void addInput() {
 		try {
-			input = scanner.nextLine();
+			input = scanner.nextLine().toLowerCase();
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -38,5 +38,8 @@ public abstract class InputEvent implements Event{
 	
 	public boolean acceptRawResponse() {
 		return true;
+	}
+	public void closeInputStream() {
+		scanner.close();
 	}
 }

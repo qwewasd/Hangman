@@ -17,9 +17,49 @@ public class Hangman {
 	public static int Score = 0;
 	private List<Integer> highscores = new ArrayList<>();
 	
+	
+	protected class Part{
+		public String figure;
+		public Part(String fig) {
+			figure = fig;
+		}
+		public Part() {}
+		
+		
+	}
+	/*  */
+	private Part[] parts = new Part[9];
+	public Part getPart(int i ) {
+		return parts[i];
+	}
 	public Hangman() {
 		File file = new File(System.getProperty("user.dir") + "\\scoreboard.dat");
 		
+		/* Init parts */
+		parts[0] = new Part();
+		parts[1] = new Part();
+		parts[2] = new Part();
+		parts[3] = new Part();
+		parts[4] = new Part();
+		parts[5] = new Part();
+		parts[6] = new Part();
+		parts[7] = new Part();
+		parts[8] = new Part();
+		
+		parts[8].figure = "";
+		parts[7].figure = " =========\n |\n |\n |\n |\n_|_";
+		parts[6].figure = " =========\n |\t |\n |\n |\n |\n_|_";
+		parts[5].figure = " =========\n |\t |\n |\t O\n |\n |\n_|_";
+
+		parts[4].figure = " =========\n |\t |\n |\t O\n |\t | \n |\n_|_";
+
+		parts[3].figure = " =========\n |\t |\n |\t O\n |\t/| \n |\n_|_";
+
+		parts[2].figure = " =========\n |\t |\n |\t O\n |\t/|\\ \n |\n_|_";
+
+		parts[1].figure = " =========\n |\t |\n |\t O\n |\t/|\\ \n |\t/ \n_|_";
+
+		parts[0].figure = " =========\n |\t |\n |\t O\n |\t/|\\ \n |\t/ \\ \n_|_";
 		try {
 			if(!file.createNewFile() ) {
 				FileInputStream fileI = new FileInputStream(System.getProperty("user.dir") + "\\scoreboard.dat");
@@ -51,7 +91,6 @@ public class Hangman {
 		Score = 0;
 	}
 
-	
 	public void tryAddHighscore() {
 		if(highscores.isEmpty()) {
 			highscores.add(Score);

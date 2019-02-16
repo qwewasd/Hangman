@@ -66,17 +66,25 @@ public class Game {
 			});
 			if(State.GetCurrentState().getStateType() == StateType.PLAY_GAME) {
 				/* Load words from file */
-				
+				word.loadFile();
 				
 				/* State transition rendering and input events */
 				State.GetCurrentState().render(new Rendering() {
 					@Override
 					public void render() {
+						if(word.getWordFromFileSize() <= 5) {
+							System.out.println("You cannot play since there are not enough words to play from! More than five words must"
+									+ "be in the game!");
+							State.SetCurrentState(mainMenu);
+							return;
+						}
+						
 						System.out.println("You are in a game of hangman! To return to main menu type 'main menu', to quit the game type 'quit'. ");
 						System.out.println("Guess this word: ");
 						System.out.println(word.toString());
+						System.out.println(hangman.getPart(Hangman.AttemptsLeft).figure);
 						System.out.println();
-						System.out.print("Words that have already been guessed: ");
+						System.out.print("Letters that have already been guessed: ");
 						for(int i = 0; i < word.getIncorrectlyGuessedLettersAmount(); i++) {
 							System.out.print(word.getIncorrectlyGuessedLetters(i) + " ");
 						}
@@ -87,10 +95,14 @@ public class Game {
 					}
 				});
 				State.GetCurrentState().event(new InputEvent() {
-
+					
 					@Override
 					public void create() {
-						if(word.areEqual()) {
+						
+						if(word.getWordFromFileSize() <= 5 ) {
+							return;
+						}
+						if(word.areEqual() ) {
 							System.out.println("You guessed the word! A new word has been generated. ");
 							hangman.restartWonGame();
 							return;
@@ -122,24 +134,31 @@ public class Game {
 								if(Hangman.AttemptsLeft == 0) {
 									hangman.tryAddHighscore();
 									System.out.println("You lost the game");
+
+									System.out.println(hangman.getPart(Hangman.AttemptsLeft).figure);
 									State.SetCurrentState(mainMenu);
 								}
 							}
-						}else if(matchesPattern("^[a-zA-Z]{2,}$")) {
+						}else if(matchesPattern("^[a-zA-Z ]{2,}$")) {
 							if(word.isTheWord(getInput())) {
 								System.out.println("You guessed a word correctly! A new word has been generated. ");
 								Hangman.Score += 50;
 								hangman.restartWonGame();
 							}else {
 								hangman.tryAddHighscore();
+
+								System.out.println(hangman.getPart(0).figure);
 								System.out.println("You lost the game");
 								State.SetCurrentState(mainMenu);
 							}
+						}else {
+							System.out.println("You must either input a word or a letter. Not any other characters. ");
 						}
 					}
 					
-					
 				});
+
+				
 			}else if(State.GetCurrentState().getStateType() == StateType.MAIN_MENU) {
 				/* State transition rendering and input events */
 				State.GetCurrentState().render();
@@ -185,7 +204,8 @@ public class Game {
 				State.GetCurrentState().render(new Rendering() {
 					@Override
 					public void render() {
-						System.out.println("You are adding a new word. Type 'main menu' if you want to go back to the main menu. The list of existing words are shown below:");
+						System.out.println("You are adding a new word. Type 'main menu'."
+								+ "\n To add a new word, you simply type the word. The list of existing words are shown below:");
 						System.out.print("[ ");
 						for(int i = 0; i < word.getWordFromFileSize(); i++) {
 							System.out.print(word.getWordFromFile(i) +  " ");

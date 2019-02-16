@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 public class Word {
@@ -16,6 +17,8 @@ public class Word {
 	
 	private List<Character> correctlyGuessedLetters = new ArrayList<>();
 	private List<Character> incorrectlyGuessedLetters = new ArrayList<>();
+	
+	
 	
 	private String[] predefinedWords = {"awkward", "bagpipes", "banjo", "croquet", "crypt", 
 			"dwarves","fervid","fishhook","fjord","gazebo","gypsy","haphazard",
@@ -35,10 +38,24 @@ public class Word {
 	
 	private void setRandomWord() {
 		Random r = new Random();
-		this.word = words.get(r.nextInt(words.size()-1));
+		if(!words.isEmpty()) {
+
+			if(words.size() > 1) {
+				
+				this.word = words.get(r.nextInt(words.size()));
+			}else {
+				this.word = words.get(0);
+			}
+			
+			
+		}else {
+			this.word = "";
+		}
+
 	}
 	
 	public void updateDisplayWord() {
+
 		StringBuffer sb = new StringBuffer();
 		
 		for(int i = 0; i < word.length(); i++) {
@@ -73,7 +90,7 @@ public class Word {
 	}
 	
 
-	private void loadFile() {
+	public void loadFile() {
 		File file = new File(System.getProperty("user.dir") + "\\words2.dat");
 		
 		try {
@@ -175,13 +192,18 @@ public class Word {
 	}
 	public boolean areEqual() {
 		int q = 0;
-		for(int i = 0; i < toString().length(); i+=2) {
-			if(toString().charAt(i) != word.charAt(q)) {
-				return false;
+		if(word != "") {
+			for(int i = 0; i < toString().length(); i+=2) {
+				if(toString().charAt(i) != word.charAt(q)) {
+					return false;
+				}
+				q++;
 			}
-			q++;
+			return true;	
+		}else {
+			return false;
 		}
-		return true;
+		
 	}
 	
 	public String getWordFromFile(int i) {
