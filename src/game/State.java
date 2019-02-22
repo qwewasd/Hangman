@@ -12,17 +12,8 @@ public class State {
 	private List<Keyword> keywords = new ArrayList<>();
 	
 	private String description;
-	/**
-	 * Constructor of a new State with a unique StateType t, unique name,
-	 * and an array of visible states which the state can be transitioned to.
-	 * Assume there are two states, A and B. In order for B to be visible for A,
-	 * A must be visible for B and conversely. Ex: From the main menu to Playing the game and 
-	 * from playing the game to the main menu.
-	 * 
-	 * Thus for a new state to be created, it must have an unique StateType and must be
-	 * visible for at least one other state not itself.
-	 *  
-	 * @param t Unique StateType 
+
+	 /** @param t Unique StateType 
 	 * @param visibility Visibility of other states that the current state object can transition back and forth to.
 	 */
 	public State(StateType t, String name) {
