@@ -72,13 +72,13 @@ public class Game {
 				State.GetCurrentState().render(new Rendering() {
 					@Override
 					public void render() {
-						if(word.getWordFromFileSize() <= 5) {
+						/*if(word.getWordFromFileSize() <= 5) {
 							System.out.println("You cannot play since there are not enough words to play from! More than five words must"
 									+ "be in the game!");
 							State.SetCurrentState(mainMenu);
 							return;
 						}
-						
+						*/
 						System.out.println("You are in a game of hangman! To return to main menu type 'main menu', to quit the game type 'quit'. ");
 						System.out.println("Guess this word: ");
 						System.out.println(word.toString());
@@ -98,10 +98,10 @@ public class Game {
 					
 					@Override
 					public void create() {
-						
+						/*
 						if(word.getWordFromFileSize() <= 5 ) {
 							return;
-						}
+						}*/
 						if(word.areEqual() ) {
 							System.out.println("You guessed the word! A new word has been generated. ");
 							hangman.restartWonGame();

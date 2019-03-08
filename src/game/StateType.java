@@ -6,5 +6,6 @@ public enum StateType {
 	QUIT_GAME,
 	ADD_WORD,
 	DELETE_WORD,
-	SCOREBOARD;
+	SCOREBOARD,
+	TEST;
 }

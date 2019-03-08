@@ -17,13 +17,11 @@ public class State {
 	 * @param visibility Visibility of other states that the current state object can transition back and forth to.
 	 */
 	public State(StateType t, String name) {
-		if(isUnique(t)) {
-			setStateType(t);
-			setName(name);
-			States.add(this);
-		}else {
-			System.out.println("StateType is not unique");
-		}
+		
+		setStateType(t);
+		setName(name);
+		States.add(this);
+		
 	}
 
 	/**
@@ -46,20 +44,31 @@ public class State {
 		for(State x : States) {
 			if(x.getStateType() == t) {
 				return false;
+				
 			}
 		}
 		return true;
 	}
 	
 	
-	public void addVisibleState(State t) {
+	public void addVisibleState(State t) throws IllegalArgumentException{
 		if(States.contains(t) && !visibleStates.contains(t)) {
-			visibleStates.add(t);
+			if(t != this) {
+				visibleStates.add(t);
+			}else {
+				throw new IllegalArgumentException("State object cannot be added to itself");
+			}
+		}else {
+			throw new IllegalArgumentException("State cannot be added twice");
 		}
 	}
 	
-	public void removeVisibleState(State t) {
-		visibleStates.remove(t);
+	public void removeVisibleState(State t) throws IllegalArgumentException {
+		if(t != this) {
+			visibleStates.remove(t);	
+		}else {
+			throw new IllegalArgumentException("State cannot remove itself");
+		}
 	}
 	
 	public State getVisibleState(int i) {
@@ -69,8 +78,12 @@ public class State {
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescription(String description) throws IllegalArgumentException {
+		if(description.length() <= 255) {
+			this.description = description;	
+		}else {
+			throw new IllegalArgumentException("Length of description must be less than 255 characters.");
+		}
 	}
 	
 	public void render(final Rendering r) {
