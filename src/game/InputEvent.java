@@ -7,8 +7,6 @@ public abstract class InputEvent implements Event{
 	private Scanner scanner = new Scanner(System.in, "UTF-8");
 	private String input; 
 	
-	private boolean inputAdded = false;
-	private boolean isRaw = true;
 	
 	public void addInput() {
 		try {

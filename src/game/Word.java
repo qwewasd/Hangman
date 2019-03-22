@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 public class Word {
@@ -113,7 +112,13 @@ public class Word {
 			
 				String[] wordsSeparated = line.split(",");
 				for(String q : wordsSeparated) {
-					words.add(q);
+					
+					if(q.matches("[a-zA-Z]*")) {
+						words.add(q.toLowerCase());
+					}else {
+						System.err.println("Word from words2.dat could not be loaded. Word must only contain letters.");
+						System.exit(0);
+					}
 				}
 					
 			}

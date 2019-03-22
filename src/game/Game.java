@@ -1,6 +1,5 @@
 package game;
 
-import java.util.Scanner;
 
 public class Game {
 	public static boolean isRunning = true;
@@ -67,18 +66,18 @@ public class Game {
 			if(State.GetCurrentState().getStateType() == StateType.PLAY_GAME) {
 				/* Load words from file */
 				word.loadFile();
-				
+				if(word.getWordFromFileSize() <= 5) {
+					System.err.println("You cannot play since there are not enough words to play from! More than five words must"
+							+ "be in the game!");
+					State.SetCurrentState(mainMenu);
+					continue;
+				}
 				/* State transition rendering and input events */
 				State.GetCurrentState().render(new Rendering() {
 					@Override
 					public void render() {
-						/*if(word.getWordFromFileSize() <= 5) {
-							System.out.println("You cannot play since there are not enough words to play from! More than five words must"
-									+ "be in the game!");
-							State.SetCurrentState(mainMenu);
-							return;
-						}
-						*/
+						
+						
 						System.out.println("You are in a game of hangman! To return to main menu type 'main menu', to quit the game type 'quit'. ");
 						System.out.println("Guess this word: ");
 						System.out.println(word.toString());
